@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Portfolio Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+        
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            white-space: pre-wrap;
+            min-height: 150px;
+        }
+        
+        .success {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+        
+        .error {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+        }
+        
+        .examples {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .examples h4 {
+            margin-bottom: 10px;
+            color: #495057;
+        }
+        
+        .examples ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .examples li {
+            padding: 5px 0;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 AI Portfolio Assistant</h1>
+            <p>Generate professional content instantly - Frontend by Your Name</p>
+        </div>
+        
+        <div class="content">
+            <div class="form-group">
+                <label for="contentType">What would you like to generate?</label>
+                <select id="contentType">
+                    <option value="bio">📝 Professional Bio</option>
+                    <option value="project">💼 Project Summary</option>
+                    <option value="reflection">🎓 Learning Reflection</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="userInput">Enter your information:</label>
+                <textarea id="userInput" placeholder="Describe your experience, skills, projects, or learning journey..."></textarea>
+                
+                <div class="examples">
+                    <h4>💡 Examples:</h4>
+                    <ul>
+                        <li><strong>Bio:</strong> "2 years web development, Python, JavaScript, React, university projects"</li>
+                        <li><strong>Project:</strong> "E-commerce website with payment processing and user accounts"</li>
+                        <li><strong>Reflection:</strong> "Learning Git version control and Agile methodologies"</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <button class="btn" onclick="generateContent()">
+                🚀 Generate Professional Content
+            </button>
+            
+            <div class="loading" id="loading">
+                <div>✨ AI is generating your content... Please wait</div>
+            </div>
+            
+            <div class="result" id="result">
+                Your AI-generated content will appear here. Try entering some information above!
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock AI responses - works without backend
+        function generateMockContent(contentType, userInput) {
+            const templates = {
+                bio: [
+                    `**PROFESSIONAL BIO**\n\nExperienced professional with expertise in ${userInput}. Demonstrated success in delivering high-quality solutions through strong technical skills and collaborative approach. Committed to continuous learning and innovation in the field.`,
+                    
+                    `**ABOUT ME**\n\nWith a background in ${userInput}, I bring a unique blend of technical proficiency and creative problem-solving. My experience spans multiple projects where I've consistently delivered results that exceed expectations.`,
+                    
+                    `**PROFILE SUMMARY**\n\nSkilled professional specializing in ${userInput}. Known for innovative approaches and dedication to excellence. Strong track record of successful project delivery and team collaboration.`
+                ],
+                project: [
+                    `**PROJECT OVERVIEW**\n\nDeveloped a comprehensive solution involving ${userInput}. The project successfully addressed key challenges through strategic planning and technical execution, resulting in measurable outcomes and positive impact.`,
+                    
+                    `**PROJECT SUMMARY**\n\nThis initiative focused on ${userInput}, showcasing strong technical capabilities and effective project management. Delivered on all objectives while maintaining high quality standards throughout the development process.`,
+                    
+                    `**PROJECT HIGHLIGHTS**\n\nSuccessfully executed a project centered around ${userInput}. Demonstrated expertise in technical implementation while ensuring alignment with business goals and user requirements.`
+                ],
+                reflection: [
+                    `**LEARNING JOURNEY**\n\nThrough my experience with ${userInput}, I've gained valuable insights that have significantly enhanced my professional capabilities. This learning process has been instrumental in developing both technical skills and strategic thinking.`,
+                    
+                    `**SKILLS DEVELOPMENT**\n\nWorking with ${userInput} provided substantial growth opportunities. I've acquired practical expertise that has directly contributed to my professional development and problem-solving abilities.`,
+                    
+                    `**PERSONAL GROWTH**\n\nMy engagement with ${userInput} has been transformative, fostering both technical mastery and personal development. The experience has prepared me for increasingly complex challenges in my field.`
+                ]
+            };
+            
+            const options = templates[contentType] || templates.bio;
+            const randomIndex = Math.floor(Math.random() * options.length);
+            return options[randomIndex];
+        }
+
+        async function generateContent() {
+            const contentType = document.getElementById('contentType').value;
+            const userInput = document.getElementById('userInput').value;
+            const resultDiv = document.getElementById('result');
+            const loadingDiv = document.getElementById('loading');
+            
+            if (!userInput.trim()) {
+                alert('Please enter some information to generate content.');
+                return;
+            }
+            
+            // Show loading state
+            loadingDiv.style.display = 'block';
+            resultDiv.innerHTML = 'Processing your request...';
+            resultDiv.className = 'result';
+            
+            try {
+                // Simulate API call delay
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // Generate mock content
+                const generatedText = generateMockContent(contentType, userInput);
+                
+                resultDiv.innerHTML = generatedText;
+                resultDiv.className = 'result success';
+                
+            } catch (error) {
+                resultDiv.innerHTML = 'Error: ' + error.message;
+                resultDiv.className = 'result error';
+            } finally {
+                loadingDiv.style.display = 'none';
+            }
+        }
+
+        // Add interactivity to examples
+        document.addEventListener('DOMContentLoaded', function() {
+            const contentTypeSelect = document.getElementById('contentType');
+            const examplesList = document.querySelector('.examples ul');
+            
+            function updateExamples() {
+                const type = contentTypeSelect.value;
+                const exampleTexts = {
+                    bio: '<li><strong>Example:</strong> "2 years web development, Python, JavaScript, React, university projects"</li>',
+                    project: '<li><strong>Example:</strong> "E-commerce website with payment processing and user accounts"</li>',
+                    reflection: '<li><strong>Example:</strong> "Learning Git version control and Agile methodologies"</li>'
+                };
+                
+                examplesList.innerHTML = exampleTexts[type] || exampleTexts.bio;
+            }
+            
+            // Update examples when selection changes
+            contentTypeSelect.addEventListener('change', updateExamples);
+            
+            // Initialize examples
+            updateExamples();
+        });
+
+        // Add keyboard shortcut (Enter key in textarea)
+        document.getElementById('userInput').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && event.ctrlKey) {
+                generateContent();
+            }
+        });
+    </script>
+</body>
+</html>
