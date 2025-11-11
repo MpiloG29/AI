@@ -135,7 +135,7 @@ Generate a professional “About Me” section for a software developer named Ka
 
 ---
 
-## 🧑‍🤝‍🧑 Team Members & Roles
+## Team Members & Roles
 
 | Name     | Role                  | Responsibilities                            |
 | -------- | --------------------- | ------------------------------------------- |
